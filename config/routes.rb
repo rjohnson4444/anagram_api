@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get 'anagrams/:word' => 'anagrams#show'
   post 'words'         => 'words#create'
   delete 'words/:word' => 'words#destroy'
+  delete 'words'       => 'anagrams#destroy'
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
 

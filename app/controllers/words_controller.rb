@@ -3,7 +3,7 @@ class WordsController < ApplicationController
 
   attr_accessor :parsed_params
 
-  before_filter :parse_request
+  before_filter :parse_request, :create_dictionary
 
   def create
     CorpusService.add(parsed_params["words"])
@@ -17,5 +17,9 @@ class WordsController < ApplicationController
 
     def parse_request
       @parsed_params ||= JSON.parse(request.body.read)
+    end
+
+    def create_dictionary
+      CorpusService.create_dictionary
     end
 end
