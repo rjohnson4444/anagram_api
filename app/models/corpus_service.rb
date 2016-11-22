@@ -9,9 +9,15 @@ class CorpusService
     words.each { |word| find_anagrams(word) }
   end
 
-  def self.anagrams(word)
+  def self.anagrams(params)
+    if params[:limit]
+      selected_anagrams = limited_anagrams(params)
+    else
+      selected_anagrams = CORPUS[params[:word]]
+    end
+
     {
-      anagrams: CORPUS[word] || []
+      anagrams: selected_anagrams || []
     }
   end
 
@@ -34,6 +40,12 @@ class CorpusService
       sorted_word1 = word1.downcase.chars.sort.join
       sorted_word2 = word2.downcase.chars.sort.join
       word2 if sorted_word1 == sorted_word2
+    end
+
+    def self.limited_anagrams(params)
+      word  = params[:word]
+      limit = params[:limit].to_i - 1
+      CORPUS[word][0..limit] if CORPUS.has_key?(word)
     end
 
 end
