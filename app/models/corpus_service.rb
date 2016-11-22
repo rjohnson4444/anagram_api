@@ -2,26 +2,32 @@ class CorpusService
   CORPUS = {}
 
   def self.create_dictionary
-    @dictionary = unzip_dictionary
+    @dictionary ||= unzip_dictionary
   end
 
   def self.add(words)
     words.each { |word| find_anagrams(word) }
   end
 
+  def self.anagrams(word)
+    {
+      anagrams: CORPUS[word] || []
+    }
+  end
+
   private
 
     def self.unzip_dictionary
       zip_dictionary = File.open("#{Rails.root}/dictionary.txt.gz")
-      gz             = Zlib::GzipReader.new(zip_dictionary)
-      gz.read.split("\n")
+      Zlib::GzipReader.new(zip_dictionary).read.split("\n")
     end
 
     def self.find_anagrams(word)
-      CORPUS[word] = [] unless CORPUS[word]
+      return if CORPUS.has_key?(word)
+
+      CORPUS[word] = []
       @dictionary.each { |dictionary_word| CORPUS[word] << compare_words(word, dictionary_word) }
-      CORPUS[word].delete(word)
-      CORPUS[word].uniq!.compact!
+      CORPUS[word].reject! { |w| w == word }.uniq!.compact!
     end
 
     def self.compare_words(word1, word2)
