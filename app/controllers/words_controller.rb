@@ -10,13 +10,15 @@ class WordsController < ApplicationController
     head :created
   end
 
-  def destoy
+  def destroy
+    CorpusService.delete_word(params)
+    head :ok
   end
 
   private
 
     def parse_request
-      @parsed_params ||= JSON.parse(request.body.read)
+      @parsed_params ||= JSON.parse(request.body.read) unless request.body.read.empty?
     end
 
     def create_dictionary

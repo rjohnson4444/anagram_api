@@ -9,6 +9,18 @@ class CorpusService
     words.each { |word| find_anagrams(word) }
   end
 
+  def self.delete_all_words
+    CORPUS.clear
+  end
+
+  def self.delete_word(params)
+    word = params[:word]
+    unless word.nil?
+      delete_word_and_anagrams(word)
+      CORPUS.each { |_, anagrams| delete_word_from_other_anagrams(word, anagrams) }
+    end
+  end
+
   def self.anagrams(params)
     if params[:limit]
       selected_anagrams = limited_anagrams(params)
@@ -46,6 +58,14 @@ class CorpusService
       word  = params[:word]
       limit = params[:limit].to_i - 1
       CORPUS[word][0..limit] if CORPUS.has_key?(word)
+    end
+
+    def self.delete_word_from_other_anagrams(word, anagrams)
+      anagrams.delete_if { |anagram| anagram == word  }
+    end
+
+    def self.delete_word_and_anagrams(word)
+      CORPUS.delete_if { |key_word, _| key_word == word }
     end
 
 end

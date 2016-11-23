@@ -5,6 +5,8 @@ class AnagramsController < ApplicationController
     respond_with CorpusService.anagrams(params)
   end
 
-  def delete
+  def destroy
+    CorpusService.delete_all_words
+    head :no_content
   end
 end
