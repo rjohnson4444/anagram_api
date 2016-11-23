@@ -1,28 +1,26 @@
-== README
+# Anagram API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a basic API implementation for fast searching of Anagrams.
 
-Things you may want to cover:
+## Configuration
 
-* Ruby version
+To install dependencies:
 
-* System dependencies
+* run `bundle install`
 
-* Configuration
+To get db setup (postgres):
 
-* Database creation
+* run `rake db:create db:migrate`
 
-* Database initialization
+To run the server:
 
-* How to run the test suite
+* run `rails s`
 
-* Services (job queues, cache servers, search engines, etc.)
+To run the application locally:
 
-* Deployment instructions
+* `localhost:3000`
 
-* ...
+To run the test suite:
 
+* `rake test`
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
