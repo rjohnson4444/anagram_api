@@ -18,7 +18,9 @@ class WordsController < ApplicationController
   private
 
     def parse_request
-      @parsed_params ||= JSON.parse(request.body.read) unless request.body.read.empty?
+      req            = request.body.read
+      param_req      = JSON.parse(req) unless (req.include?("%") || req.empty?)
+      @parsed_params = param_req.nil? ? params : param_req
     end
 
     def create_dictionary

@@ -45,7 +45,9 @@ class CorpusService
 
       CORPUS[word] = []
       @dictionary.each { |dictionary_word| CORPUS[word] << compare_words(word, dictionary_word) }
-      CORPUS[word].reject! { |w| w == word }.uniq!.compact!
+      CORPUS[word].keep_if { |w| w.downcase != word.downcase unless w.nil? }
+      CORPUS[word].uniq!
+      CORPUS[word].compact!
     end
 
     def self.compare_words(word1, word2)
@@ -61,11 +63,11 @@ class CorpusService
     end
 
     def self.delete_word_from_other_anagrams(word, anagrams)
-      anagrams.delete_if { |anagram| anagram == word  }
+      anagrams.delete_if { |anagram| anagram.downcase == word.downcase }
     end
 
     def self.delete_word_and_anagrams(word)
-      CORPUS.delete_if { |key_word, _| key_word == word }
+      CORPUS.delete_if { |key_word, _| key_word.downcase == word.downcase }
     end
 
 end
