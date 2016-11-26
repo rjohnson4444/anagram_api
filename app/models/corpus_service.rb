@@ -22,11 +22,7 @@ class CorpusService
   end
 
   def self.anagrams(params)
-    if params[:limit]
-      selected_anagrams = limited_anagrams(params)
-    else
-      selected_anagrams = CORPUS[params[:word]]
-    end
+    selected_anagrams = params[:limit] ? limited_anagrams(params) : CORPUS[params[:word]]
 
     {
       anagrams: selected_anagrams || []

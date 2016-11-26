@@ -6,8 +6,12 @@ class WordsController < ApplicationController
   before_filter :parse_request, :create_dictionary
 
   def create
-    CorpusService.add(parsed_params["words"])
-    head :created
+    if parsed_params["words"]
+      CorpusService.add(parsed_params["words"])
+      head :created
+    else
+      render json: error_response
+    end
   end
 
   def destroy
@@ -16,6 +20,13 @@ class WordsController < ApplicationController
   end
 
   private
+    def error_response
+      { error: {
+                 status: 400,
+                 message: "Unable to process your request."
+               }
+      }
+    end
 
     def parse_request
       req            = request.body.read
